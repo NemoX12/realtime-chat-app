@@ -1,0 +1,11 @@
+@import "tailwindcss";
+
+@theme {
+  --color-main_dark: #202030;
+  --color-secondary_dark: #39304a;
+  --color-spec-1-dark: #51426f;
+  --color-spec-2-dark: #7d7461;
+  --color-label-text: #9e89c7;
+  --color-label-brighter-text: #bda5ec;
+  --color-input-text: #ffffff;
+}
