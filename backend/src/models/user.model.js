@@ -7,7 +7,7 @@ const userSchema = new mongoose.Schema(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true, minLength: 6 },
     photoUrl: { type: String, default: "" },
-    friendsList: { type: Array, default: [] },
+    friendsList: [{ type: mongoose.Schema.Types.ObjectId, ref: "User", default: [] }],
   },
   { timestamps: true }
 );

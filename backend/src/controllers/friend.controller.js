@@ -1,3 +1,4 @@
+import { recordTraceEvents } from "next/dist/trace/trace.js";
 import FriendRequest from "../models/friend.model.js";
 import User from "../models/user.model.js";
 
@@ -74,8 +75,8 @@ export const manageFriendRequest = async (req, res) => {
           return res.status(400).json({ error: "Already friends" });
         }
 
-        await sender.updateOne({ $push: { friendsList: receiverId } });
-        await receiver.updateOne({ $push: { friendsList: senderId } });
+        await sender.updateOne({ $push: { friendsList: receiver } });
+        await receiver.updateOne({ $push: { friendsList: sender } });
 
         await FriendRequest.findByIdAndDelete(requestId);
 

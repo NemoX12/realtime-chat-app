@@ -1,7 +1,12 @@
 import { LoaderCircle } from "lucide-react";
 
-const Loader = () => {
-  return <LoaderCircle className="animate-spin mx-auto" />;
+interface LoaderProps {
+  className?: string;
+  size?: number;
+}
+
+const Loader = ({ className, size = 24 }: LoaderProps) => {
+  return <LoaderCircle size={size} className={`animate-spin mx-auto ${className}`} />;
 };
 
 export default Loader;

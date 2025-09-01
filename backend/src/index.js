@@ -1,8 +1,8 @@
 import express from "express";
 import { config } from "dotenv";
+config();
 import cookieparser from "cookie-parser";
 import cors from "cors";
-config();
 
 import { connectDB } from "./lib/db.js";
 
@@ -12,7 +12,11 @@ import friendRoute from "./routes/friend.route.js";
 
 const app = express();
 
-app.use(express.json());
+app.use(
+  express.json({
+    limit: "10mb",
+  })
+);
 app.use(
   cors({
     origin: "http://localhost:5173",
@@ -20,8 +24,6 @@ app.use(
   })
 );
 app.use(cookieparser());
-
-// finish signing in
 
 app.use("/api/auth", authRoute);
 app.use("/api/messages", messageRoute);

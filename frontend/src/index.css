@@ -9,3 +9,13 @@
   --color-label-brighter-text: #bda5ec;
   --color-input-text: #ffffff;
 }
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}

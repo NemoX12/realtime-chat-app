@@ -2,11 +2,11 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as z from "zod";
 
-import FormInput from "../components/FormInput";
-import FormButton from "../components/FormButton";
+import FormInput from "../components/Form/FormInput";
+import FormButton from "../components/Form/FormButton";
 import { useAuthStore } from "../store/useAuthStore";
-import FormDistraction from "../components/FormDistraction";
-import { SignInSchema } from "../lib/schemas";
+import FormDistraction from "../components/Form/FormDistraction";
+import { SignInSchema } from "../lib/schemas/schemas";
 
 const SignIn = () => {
   const [formData, setFormData] = useState({

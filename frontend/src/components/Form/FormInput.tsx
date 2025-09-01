@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import type { core } from "zod";
-import HandleZodError from "../lib/handleZodError";
+import HandleZodError from "../../lib/handleZodError";
 
 interface FormData {
   firstName: string;

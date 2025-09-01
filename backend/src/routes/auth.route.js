@@ -11,7 +11,7 @@ import {
 
 const router = express.Router();
 
-router.get("/check", checkAuth);
+router.get("/check", protectedRoute, checkAuth);
 
 router.post("/signup", signUp);
 router.post("/signin", signIn);

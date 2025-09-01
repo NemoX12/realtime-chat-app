@@ -16,12 +16,19 @@ export const sendMessage = async (req, res) => {
   try {
     const { receiverId, content, attachments } = req.body;
 
-    const attachmentUrl = "";
+    let attachmentUrl = "";
 
-    if (attachments !== "") {
+    if (attachments) {
       const uploadedImage = await cloudinary.uploader.upload(attachments);
       attachmentUrl = uploadedImage.secure_url;
     }
+
+    console.log({
+      senderId: req.user._id,
+      receiverId,
+      content,
+      attachments: attachmentUrl,
+    });
 
     const newMessage = new Message({
       senderId: req.user._id,

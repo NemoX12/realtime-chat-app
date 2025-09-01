@@ -2,23 +2,12 @@
 import { create } from "zustand";
 import toast from "react-hot-toast";
 import axiosInstance from "../lib/axiosInstance.ts";
-
-interface User {
-  _id: string;
-  fullName: string;
-  email: string;
-  password?: string;
-  photoUrl?: string;
-  friendsList?: string[];
-  createdAt?: string;
-  updatedAt?: string;
-}
+import type User from "../lib/schemas/userSchema.ts";
 
 interface AuthStore {
   user: User | null;
   isSigningUp: boolean;
   isSigningIn: boolean;
-  isLoggingOut: boolean;
   isCheckingAuth: boolean;
   isUpdatingProfile: boolean;
   checkAuth: () => Promise<void>;
@@ -33,7 +22,6 @@ export const useAuthStore = create<AuthStore>((set) => ({
 
   isSigningUp: false,
   isSigningIn: false,
-  isLoggingOut: false,
   isCheckingAuth: false,
   isUpdatingProfile: false,
 
@@ -45,8 +33,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
       set({ user: response.data });
     } catch (error: any) {
       set({ user: null });
-      toast.error(error.response.data.error);
-      console.error(error);
+      console.error(error.message);
     } finally {
       set({ isCheckingAuth: false });
     }
@@ -54,7 +41,6 @@ export const useAuthStore = create<AuthStore>((set) => ({
 
   signUp: async (data) => {
     set({ isSigningUp: true });
-    console.log(data);
 
     try {
       const response = await axiosInstance.post("/auth/signup", data);
@@ -85,8 +71,6 @@ export const useAuthStore = create<AuthStore>((set) => ({
   },
 
   logout: async () => {
-    set({ isLoggingOut: true });
-
     try {
       await axiosInstance.post("/auth/logout");
       set({ user: null });
@@ -94,8 +78,6 @@ export const useAuthStore = create<AuthStore>((set) => ({
     } catch (error: any) {
       toast.error(error.response.data.error);
       console.error(error);
-    } finally {
-      set({ isLoggingOut: false });
     }
   },
 
