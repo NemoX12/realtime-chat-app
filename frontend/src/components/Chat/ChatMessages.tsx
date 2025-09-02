@@ -41,7 +41,6 @@ const ChatMessages = () => {
   return (
     <div className="flex-1 py-2 w-full flex flex-col items-start justify-start gap-3.5 overflow-y-auto">
       {sortedMessages.map((message) => {
-        // TODO: add message deletion
         const currentDate = getDayLabel(message.createdAt);
         const showDate = currentDate !== lastDate;
         lastDate = currentDate;

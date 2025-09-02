@@ -4,8 +4,8 @@ import cloudinary from "../lib/cloudinary.js";
 
 export const getUsers = async (req, res) => {
   try {
-    const resp = await User.find();
-    res.status(200).json(resp);
+    const response = await User.find();
+    res.status(200).json(response);
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
     console.error(error);
@@ -71,7 +71,6 @@ export const deleteMessage = async (req, res) => {
 
 export const getMessages = async (req, res) => {
   try {
-    "fdaf", req.body;
     const { id: userToChatId } = req.body;
     const myId = req.user._id;
 

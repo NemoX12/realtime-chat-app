@@ -57,7 +57,6 @@ export const useAuthStore = create<AuthStore>((set) => ({
   signIn: async (data) => {
     set({ isSigningIn: true });
 
-    console.log(data);
     try {
       const response = await axiosInstance.post("/auth/signin", data);
       set({ user: response.data });

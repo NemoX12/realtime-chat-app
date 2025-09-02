@@ -9,7 +9,7 @@ interface FriendsProps {
   isGettingFriends: boolean;
   isSendingFriendRequest: boolean;
   getFriends: () => Promise<void>;
-  sendRequest: (data: any) => Promise<void>;
+  // sendRequest: (data: any) => Promise<void>;
 }
 
 export const useFriendsStore = create<FriendsProps>((set) => ({
@@ -31,7 +31,7 @@ export const useFriendsStore = create<FriendsProps>((set) => ({
     }
   },
 
-  sendRequest: async (data) => {
+  /* sendRequest: async (data) => {
     set({ isSendingFriendRequest: true });
 
     try {
@@ -43,5 +43,5 @@ export const useFriendsStore = create<FriendsProps>((set) => ({
     } finally {
       set({ isSendingFriendRequest: false });
     }
-  },
+  }, */
 }));
