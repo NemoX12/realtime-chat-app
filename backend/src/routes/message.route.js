@@ -10,7 +10,7 @@ import protectedRoute from "../middleware/protectedRoute.js";
 const router = express.Router();
 
 router.get("/users", protectedRoute, getUsers);
-router.get("/get-messages", protectedRoute, getMessages);
+router.post("/get-messages", protectedRoute, getMessages);
 
 router.post("/send-message", protectedRoute, sendMessage);
 

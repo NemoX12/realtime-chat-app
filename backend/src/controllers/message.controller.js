@@ -23,13 +23,6 @@ export const sendMessage = async (req, res) => {
       attachmentUrl = uploadedImage.secure_url;
     }
 
-    console.log({
-      senderId: req.user._id,
-      receiverId,
-      content,
-      attachments: attachmentUrl,
-    });
-
     const newMessage = new Message({
       senderId: req.user._id,
       receiverId,
@@ -78,6 +71,7 @@ export const deleteMessage = async (req, res) => {
 
 export const getMessages = async (req, res) => {
   try {
+    "fdaf", req.body;
     const { id: userToChatId } = req.body;
     const myId = req.user._id;
 

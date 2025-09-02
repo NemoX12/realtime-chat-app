@@ -8,6 +8,18 @@
   --color-label-text: #9e89c7;
   --color-label-brighter-text: #bda5ec;
   --color-input-text: #ffffff;
+
+  --animate-zoomin: zoomin 0.1s ease-in;
+
+  @keyframes zoomin {
+    0% {
+      transform: scale(50%);
+    }
+
+    100% {
+      transform: scale(100%);
+    }
+  }
 }
 
 @layer utilities {
