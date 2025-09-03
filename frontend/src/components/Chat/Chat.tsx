@@ -15,7 +15,11 @@ const Chat = () => {
           <ChatInput />
         </>
       ) : (
-        <div>no chat</div>
+        <div className="self-center my-auto">
+          <h1 className="text-label-text text-lg font-semibold">
+            Begin chatting by selecting a chat
+          </h1>
+        </div>
       )}
     </div>
   );

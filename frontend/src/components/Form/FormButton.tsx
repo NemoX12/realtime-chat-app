@@ -2,7 +2,7 @@ import Loader from "../Loader";
 
 interface FormButtonProps {
   placeholder: string;
-  loading: boolean;
+  loading?: boolean;
 }
 
 const FormButton = ({ placeholder, loading }: FormButtonProps) => {

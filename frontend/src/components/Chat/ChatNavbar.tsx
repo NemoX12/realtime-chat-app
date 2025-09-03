@@ -8,9 +8,9 @@ const ChatNavbar = () => {
 
   return (
     <div className="flex w-full justify-between">
-      <div className="flex items-center gap-2.5">
+      <div className="flex justify-start items-center gap-2.5 mb-2">
         <img
-          className="w-12 h-12 rounded-full"
+          className="w-10 h-10 rounded-full"
           src={selectedChat?.photoUrl ? selectedChat.photoUrl : "avatar_placeholder.png"}
           alt="user_avatar"
         />

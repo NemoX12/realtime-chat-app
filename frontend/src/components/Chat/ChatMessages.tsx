@@ -15,6 +15,8 @@ const ChatMessages = () => {
   } = useChatStore();
   const endOfMessages = useRef<HTMLDivElement>(null);
 
+  const firstLoadRef = useRef(true);
+
   useEffect(() => {
     getMessages({ id: selectedChat?._id });
 
@@ -24,7 +26,12 @@ const ChatMessages = () => {
   }, [getMessages, selectedChat, subscribeMessages, unsubscribeMessages]);
 
   useEffect(() => {
-    endOfMessages.current?.scrollIntoView({ behavior: "smooth" });
+    if (!messages) return;
+
+    const behavior = firstLoadRef.current ? "auto" : "smooth";
+    endOfMessages.current?.scrollIntoView({ behavior });
+
+    if (firstLoadRef.current) firstLoadRef.current = false;
   }, [messages]);
 
   if (isGettingMessages) {
