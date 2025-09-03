@@ -9,8 +9,7 @@ import { connectDB } from "./lib/db.js";
 import authRoute from "./routes/auth.route.js";
 import messageRoute from "./routes/message.route.js";
 import friendRoute from "./routes/friend.route.js";
-
-const app = express();
+import { app, server } from "./lib/socket.js";
 
 app.use(
   express.json({
@@ -29,7 +28,7 @@ app.use("/api/auth", authRoute);
 app.use("/api/messages", messageRoute);
 app.use("/api/friends", friendRoute);
 
-app.listen(process.env.SERVER_PORT, (err) => {
+server.listen(process.env.SERVER_PORT, (err) => {
   if (err) console.error(err);
   else {
     console.log("Server started on port:", process.env.SERVER_PORT);

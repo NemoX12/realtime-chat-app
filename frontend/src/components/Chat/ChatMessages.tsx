@@ -5,12 +5,23 @@ import Loader from "../Loader";
 import { getDayLabel } from "../../lib/formatDate";
 
 const ChatMessages = () => {
-  const { getMessages, isGettingMessages, messages, selectedChat } = useChatStore();
+  const {
+    getMessages,
+    isGettingMessages,
+    messages,
+    selectedChat,
+    subscribeMessages,
+    unsubscribeMessages,
+  } = useChatStore();
   const endOfMessages = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     getMessages({ id: selectedChat?._id });
-  }, [getMessages, selectedChat]);
+
+    subscribeMessages();
+
+    return () => unsubscribeMessages();
+  }, [getMessages, selectedChat, subscribeMessages, unsubscribeMessages]);
 
   useEffect(() => {
     endOfMessages.current?.scrollIntoView({ behavior: "smooth" });

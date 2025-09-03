@@ -1,4 +1,5 @@
 import type User from "../../lib/schemas/userSchema.ts";
+import { useAuthStore } from "../../store/useAuthStore.ts";
 import { useChatStore } from "../../store/useChatStore.ts";
 
 interface ChatMiniatureProps {
@@ -6,6 +7,7 @@ interface ChatMiniatureProps {
 }
 
 const ChatMiniature = ({ user }: ChatMiniatureProps) => {
+  const { onlineUsers } = useAuthStore();
   const { selectedChat, selectChat } = useChatStore();
   const fullName = `${user.firstName} ${user.lastName}`;
 
@@ -17,11 +19,16 @@ const ChatMiniature = ({ user }: ChatMiniatureProps) => {
         `}
       onClick={() => selectChat(user)}
     >
-      <img
-        className="w-12 h-12 rounded-full"
-        src={selectedChat?.photoUrl ? selectedChat.photoUrl : "avatar_placeholder.png"}
-        alt="user_avatar"
-      />
+      <div className="relative">
+        <img
+          className="w-12 h-12 rounded-full"
+          src={selectedChat?.photoUrl ? selectedChat.photoUrl : "avatar_placeholder.png"}
+          alt="user_avatar"
+        />
+        {onlineUsers.includes(user._id) && (
+          <div className="absolute w-3 h-3 rounded-full bg-green-500 top-9 right-0"></div>
+        )}
+      </div>
       <h1
         className={`text-md 
           ${selectedChat === user ? "text-secondary_dark" : "text-label-text"}
