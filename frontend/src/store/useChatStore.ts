@@ -7,11 +7,14 @@ import type messageSchema from "../lib/schemas/messageSchema.ts";
 import { useAuthStore } from "./useAuthStore.ts";
 
 interface ChatProps {
+  users: User[] | null;
   selectedChat: User | null;
   selectedImage: string | null;
   messages: messageSchema[] | null;
+  isGettingUsers: boolean;
   isSendingMessage: boolean;
   isGettingMessages: boolean;
+  getUsers: () => Promise<void>;
   selectChat: (data: any) => void;
   closeChat: () => void;
   selectImage: (data: any) => void;
@@ -24,11 +27,27 @@ interface ChatProps {
 }
 
 export const useChatStore = create<ChatProps>((set, get) => ({
+  users: null,
   selectedChat: null,
   selectedImage: null,
   messages: null,
+  isGettingUsers: false,
   isGettingMessages: false,
   isSendingMessage: false,
+
+  getUsers: async () => {
+    set({ isGettingMessages: true });
+
+    try {
+      const response = await AxiosInstance.get("/messages/users");
+      set({ users: response.data });
+    } catch (error: any) {
+      toast.error(error.response.data.error);
+      console.error("Error fetching users");
+    } finally {
+      set({ isGettingMessages: false });
+    }
+  },
 
   selectChat: async (data) => {
     set({ selectedChat: data });

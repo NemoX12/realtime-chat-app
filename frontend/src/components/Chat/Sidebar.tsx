@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { LogOut, Settings, UserPlus2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 import ChatMiniature from "./ChatMiniature";
 import { useFriendsStore } from "../../store/useFriendsStore";
@@ -8,6 +9,8 @@ import Loader from "../Loader";
 
 const Sidebar = () => {
   const [filteredFriends, setFilteredFriends] = useState("");
+
+  const navigate = useNavigate();
 
   const { friends, getFriends, isGettingFriends } = useFriendsStore();
   const { logout } = useAuthStore();
@@ -29,6 +32,7 @@ const Sidebar = () => {
           className="duration-150 transition-all p-1 hover:bg-spec-1-dark rounded-sm cursor-pointer"
           title="Add friend"
           aria-label="Add friend"
+          onClick={() => navigate("/friends")}
         >
           <UserPlus2 className="text-label-text" />
         </button>

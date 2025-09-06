@@ -1,4 +1,4 @@
-import { recordTraceEvents } from "next/dist/trace/trace.js";
+import { getReceiverSocketId, io } from "../lib/socket.js";
 import FriendRequest from "../models/friend.model.js";
 import User from "../models/user.model.js";
 
@@ -11,19 +11,19 @@ export const sendFriendRequest = async (req, res) => {
 
     if (
       sender.friendsList.includes(receiverId) ||
-      receiver.friendsList.includes(req.user_id)
+      receiver.friendsList.includes(req.user._id)
     ) {
       return res.status(400).json({ error: "Already friends" });
     }
 
-    const friendRequest = await FriendRequest.findOne({
+    const existingRequest = await FriendRequest.findOne({
       $or: [
-        { senderId: req.user._id, receiverId: receiverId },
+        { senderId: req.user._id, receiverId },
         { senderId: receiverId, receiverId: req.user._id },
       ],
     });
 
-    if (friendRequest) {
+    if (existingRequest) {
       return res.status(400).json({ error: "Friend request already exists" });
     }
 
@@ -32,11 +32,36 @@ export const sendFriendRequest = async (req, res) => {
       receiverId,
     });
 
-    if (newFriendRequest) {
-      await newFriendRequest.save();
+    await newFriendRequest.save();
 
-      res.status(201).json(newFriendRequest);
+    const populatedRequest = await FriendRequest.findById(newFriendRequest._id)
+      .populate("senderId", "_id firstName lastName email photoUrl")
+      .populate("receiverId", "_id firstName lastName email photoUrl");
+
+    const receiverSocketId = getReceiverSocketId(receiverId);
+    if (receiverSocketId) {
+      io.to(receiverSocketId).emit("addFriend", populatedRequest);
     }
+
+    const senderSocketId = getReceiverSocketId(req.user._id.toString());
+    if (senderSocketId) {
+      io.to(senderSocketId).emit("addFriend", populatedRequest);
+    }
+
+    res.status(201).json(populatedRequest);
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+    console.error(error);
+  }
+};
+
+export const getFriendRequests = async (req, res) => {
+  try {
+    const requests = await FriendRequest.find()
+      .populate("senderId", "_id firstName lastName email photoUrl")
+      .populate("receiverId", "_id firstName lastName email photoUrl");
+
+    res.status(200).json(requests);
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
     console.error(error);
@@ -48,7 +73,7 @@ export const manageFriendRequest = async (req, res) => {
     const { action, id: requestId } = req.body;
 
     switch (action) {
-      case "accept":
+      case "accept": {
         const friendRequest = await FriendRequest.findById(requestId);
 
         if (!friendRequest) {
@@ -75,29 +100,60 @@ export const manageFriendRequest = async (req, res) => {
           return res.status(400).json({ error: "Already friends" });
         }
 
-        await sender.updateOne({ $push: { friendsList: receiver } });
-        await receiver.updateOne({ $push: { friendsList: sender } });
+        await sender.updateOne({ $push: { friendsList: receiver._id } });
+        await receiver.updateOne({ $push: { friendsList: sender._id } });
 
-        await FriendRequest.findByIdAndDelete(requestId);
+        await friendRequest.deleteOne();
 
-        res.status(201).json(receiver);
+        const populatedSender = await User.findById(senderId).select(
+          "_id firstName lastName email photoUrl"
+        );
+        const populatedReceiver = await User.findById(receiverId).select(
+          "_id firstName lastName email photoUrl"
+        );
 
-      case "decline":
-        const request = await FriendRequest.findById(requestId);
+        const receiverSocketId = getReceiverSocketId(receiverId);
+        if (receiverSocketId) {
+          io.to(receiverSocketId).emit("acceptRequest", populatedSender, friendRequest);
+        }
 
-        if (!request) {
+        const senderSocketId = getReceiverSocketId(senderId.toString());
+        if (senderSocketId) {
+          io.to(senderSocketId).emit("acceptRequest", populatedReceiver, friendRequest);
+        }
+
+        res.status(201).json(populatedReceiver);
+        break;
+      }
+
+      case "decline": {
+        const friendRequest = await FriendRequest.findById(requestId);
+
+        if (!friendRequest) {
           return res.status(400).json({ error: "Request doesn't exist" });
         }
 
-        const { receiverID } = request;
+        const { receiverId, senderId } = friendRequest;
 
-        if (req.user._id !== receiverID) {
+        if (req.user._id.toString() !== receiverId) {
           return res.status(400).json({ error: "You aren't the receiver" });
         }
 
-        await request.deleteOne();
+        await friendRequest.deleteOne();
+
+        const receiverSocketId = getReceiverSocketId(receiverId);
+        if (receiverSocketId) {
+          io.to(receiverSocketId).emit("declineRequest", friendRequest);
+        }
+
+        const senderSocketId = getReceiverSocketId(senderId);
+        if (senderSocketId) {
+          io.to(senderSocketId).emit("declineRequest", friendRequest);
+        }
 
         res.status(201).json({ message: "Successfully declined request" });
+        break;
+      }
     }
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
@@ -107,7 +163,11 @@ export const manageFriendRequest = async (req, res) => {
 
 export const getFriends = async (req, res) => {
   try {
-    const user = req.user;
+    const user = await User.findById(req.user._id).populate(
+      "friendsList",
+      "_id firstName lastName email photoUrl"
+    );
+
     res.status(200).json(user.friendsList);
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
@@ -133,8 +193,8 @@ export const deleteFriend = async (req, res) => {
       return res.status(400).json({ error: "You aren't friends" });
     }
 
-    await myUser.updateOne({ $pull: { friendsList: friendUser._id.toString() } });
-    await friendUser.updateOne({ $pull: { friendsList: myUser._id.toString() } });
+    await myUser.updateOne({ $pull: { friendsList: friendUser._id } });
+    await friendUser.updateOne({ $pull: { friendsList: myUser._id } });
 
     res.status(201).json({ message: "Deleted a friend successfully" });
   } catch (error) {
