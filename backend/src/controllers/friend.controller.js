@@ -177,7 +177,7 @@ export const getFriends = async (req, res) => {
 
 export const deleteFriend = async (req, res) => {
   try {
-    const { id: friendToDelete } = req.body;
+    const friendToDelete = req.query.id;
 
     const myUser = await User.findById(req.user._id);
     const friendUser = await User.findById(friendToDelete);

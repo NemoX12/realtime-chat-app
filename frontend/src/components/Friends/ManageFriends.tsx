@@ -22,7 +22,7 @@ const ManageFriends = () => {
       return;
     }
 
-    let id = null;
+    let id: string | null = null;
 
     if (filter.startsWith("#")) {
       if (filter.slice(1).length === 5) {
@@ -38,24 +38,21 @@ const ManageFriends = () => {
     const output = friends?.filter((friend) => {
       if (!id) {
         const fullName = (friend.firstName + " " + friend.lastName).toLowerCase();
+        const searchTerm = filter.toLowerCase().trim();
 
-        //   TODO: prevent from getting symbols as a regexp pattern, like $ or ^
-        const pattern = new RegExp(filter.toLowerCase().trim(), "g");
-
-        return pattern.test(fullName) && friend._id !== user?._id;
+        return fullName.includes(searchTerm) && friend._id !== user?._id;
       }
 
       return id === friend._id.slice(-5) && friend._id !== user?._id;
     });
 
     setFilteredUsers(output);
-    // TODO: filter added friends
   }, [filter, friends, user?._id]);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
       handleSearch();
-    }, 1000);
+    }, 500);
 
     return () => clearTimeout(timeout);
   }, [filter, handleSearch]);

@@ -16,8 +16,6 @@ router.get("/requests", protectedRoute, getFriendRequests);
 router.post("/send-request", protectedRoute, sendFriendRequest);
 router.post("/manage-request", protectedRoute, manageFriendRequest);
 
-router.post("/delete-friend", protectedRoute, deleteFriend);
-// TODO: think about route cuz delete doesn't accept the body
-// TODO: deletion socket doesn't work
+router.delete("/delete-friend", protectedRoute, deleteFriend);
 
 export default router;

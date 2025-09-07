@@ -21,7 +21,7 @@ const AddFriends = () => {
       e.preventDefault();
       if (filter === "") return;
 
-      let id = null;
+      let id: string | null = null;
 
       if (filter.startsWith("#")) {
         if (filter.slice(1).length === 5) {
@@ -34,14 +34,12 @@ const AddFriends = () => {
 
       if (!users) return;
 
-      const output = users?.filter((user) => {
+      const output = users.filter((user) => {
         if (!id) {
           const fullName = (user.firstName + " " + user.lastName).toLowerCase();
+          const searchTerm = filter.toLowerCase().trim();
 
-          //   TODO: prevent from getting symbols as a regexp pattern, like $ or ^
-          const pattern = new RegExp(filter.toLowerCase().trim(), "g");
-
-          return pattern.test(fullName) && user._id !== authUser?._id;
+          return fullName.includes(searchTerm) && user._id !== authUser?._id;
         }
 
         return id === user._id.slice(-5) && user._id !== authUser?._id;

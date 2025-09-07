@@ -84,7 +84,7 @@ export const useFriendsStore = create<FriendsProps>((set, get) => ({
     set({ isDeletingFriend: data.id });
 
     try {
-      const response = await AxiosInstance.post("/friends/delete-friend", data);
+      const response = await AxiosInstance.delete(`/friends/delete-friend?id=${data.id}`);
       toast.success(response.data.message);
     } catch (error: any) {
       toast.error(error.response.data.error);
@@ -137,5 +137,3 @@ export const useFriendsStore = create<FriendsProps>((set, get) => ({
     socket?.off("deleteFriend");
   },
 }));
-
-// TODO: deletign of the requests after accepting or declining it, should be synced
