@@ -12,10 +12,12 @@ interface FriendsProps {
   isGettingFriends: boolean;
   isSendingFriendRequest: boolean;
   isManagingRequest: string | null;
+  isDeletingFriend: string | null;
   getFriends: () => Promise<void>;
   getRequests: () => Promise<void>;
   sendRequest: (data: any) => Promise<void>;
   manageRequest: (data: any) => Promise<void>;
+  deleteFriend: (data: any) => Promise<void>;
   subscribeFriends: () => void;
   unsubscribeFriends: () => void;
 }
@@ -26,6 +28,7 @@ export const useFriendsStore = create<FriendsProps>((set, get) => ({
   isGettingFriends: false,
   isSendingFriendRequest: false,
   isManagingRequest: null,
+  isDeletingFriend: null,
 
   getFriends: async () => {
     set({ isGettingFriends: true });
@@ -77,6 +80,20 @@ export const useFriendsStore = create<FriendsProps>((set, get) => ({
     }
   },
 
+  deleteFriend: async (data) => {
+    set({ isDeletingFriend: data.id });
+
+    try {
+      const response = await AxiosInstance.post("/friends/delete-friend", data);
+      toast.success(response.data.message);
+    } catch (error: any) {
+      toast.error(error.response.data.error);
+      console.error(error);
+    } finally {
+      set({ isDeletingFriend: null });
+    }
+  },
+
   subscribeFriends: () => {
     const socket = useAuthStore.getState().socket;
 
@@ -104,6 +121,12 @@ export const useFriendsStore = create<FriendsProps>((set, get) => ({
         ],
       }));
     });
+
+    socket?.on("deleteFriend", (friendId) => {
+      set((state) => ({
+        friends: [...(state.friends?.filter((friend) => friend._id !== friendId) || [])],
+      }));
+    });
   },
 
   unsubscribeFriends: () => {
@@ -111,6 +134,7 @@ export const useFriendsStore = create<FriendsProps>((set, get) => ({
     socket?.off("addFriend");
     socket?.off("acceptRequest");
     socket?.off("declineRequest");
+    socket?.off("deleteFriend");
   },
 }));
 

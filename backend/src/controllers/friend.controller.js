@@ -196,7 +196,17 @@ export const deleteFriend = async (req, res) => {
     await myUser.updateOne({ $pull: { friendsList: friendUser._id } });
     await friendUser.updateOne({ $pull: { friendsList: myUser._id } });
 
-    res.status(201).json({ message: "Deleted a friend successfully" });
+    const receiverSocketId = getReceiverSocketId(friendUser._id.toString());
+    if (receiverSocketId) {
+      io.to(receiverSocketId).emit("deleteFriend", myUser._id);
+    }
+
+    const senderSocketId = getReceiverSocketId(myUser._id.toString());
+    if (senderSocketId) {
+      io.to(senderSocketId).emit("deleteFriend", friendUser._id);
+    }
+
+    res.status(201).json({ message: "Deleted friend successfully" });
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
     console.error(error);

@@ -65,6 +65,7 @@ const AddFriends = () => {
                     : "focus:outline outline-label-text"
                 } 
                 `}
+            placeholder="Search by username or id #00000"
             onChange={(e) => setFilter(e.target.value)}
           />
 
