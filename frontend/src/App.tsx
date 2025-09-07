@@ -9,6 +9,7 @@ import SignIn from "./pages/SignIn.tsx";
 import SignUp from "./pages/SignUp.tsx";
 import { Toaster } from "react-hot-toast";
 import Loader from "./components/Loader.tsx";
+import Settings from "./pages/Settings.tsx";
 
 const App = () => {
   const { user, checkAuth, isCheckingAuth } = useAuthStore();
@@ -33,6 +34,10 @@ const App = () => {
         <Route
           path="/friends"
           element={user ? <Friends /> : <Navigate to={"/signin"} />}
+        />
+        <Route
+          path="/settings"
+          element={user ? <Settings /> : <Navigate to={"/signin"} />}
         />
         <Route path="/signup" element={!user ? <SignUp /> : <Navigate to={"/"} />} />
         <Route path="/signin" element={!user ? <SignIn /> : <Navigate to={"/"} />} />

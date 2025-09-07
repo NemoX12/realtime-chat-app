@@ -17,6 +17,7 @@ interface FriendsProps {
   getRequests: () => Promise<void>;
   sendRequest: (data: any) => Promise<void>;
   manageRequest: (data: any) => Promise<void>;
+  updateFriend: (data: any) => void;
   deleteFriend: (data: any) => Promise<void>;
   subscribeFriends: () => void;
   unsubscribeFriends: () => void;
@@ -79,6 +80,12 @@ export const useFriendsStore = create<FriendsProps>((set, get) => ({
       set({ isManagingRequest: null });
     }
   },
+
+  updateFriend: (friend) =>
+    set((state) => ({
+      friends:
+        state.friends && state.friends.map((f) => (f._id === friend._id ? friend : f)),
+    })),
 
   deleteFriend: async (data) => {
     set({ isDeletingFriend: data.id });
