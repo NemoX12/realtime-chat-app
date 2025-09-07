@@ -1,10 +1,20 @@
+import { useEffect } from "react";
+
 import { useChatStore } from "../../store/useChatStore";
 import ChatInput from "./ChatInput";
 import ChatMessages from "./ChatMessages";
 import ChatNavbar from "./ChatNavbar";
+import { useFriendsStore } from "../../store/useFriendsStore";
 
 const Chat = () => {
   const { selectedChat } = useChatStore();
+  const { subscribeFriends, unsubscribeFriends } = useFriendsStore();
+
+  useEffect(() => {
+    subscribeFriends();
+
+    return () => unsubscribeFriends();
+  });
 
   return (
     <div className="w-full h-full flex flex-col justify-start items-start px-5 py-2.5">

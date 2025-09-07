@@ -4,6 +4,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuthStore } from "./store/useAuthStore.ts";
 
 import Home from "./pages/Home.tsx";
+import Friends from "./pages/Friends.tsx";
 import SignIn from "./pages/SignIn.tsx";
 import SignUp from "./pages/SignUp.tsx";
 import { Toaster } from "react-hot-toast";
@@ -29,6 +30,10 @@ const App = () => {
       <Toaster />
       <Routes>
         <Route path="/" element={user ? <Home /> : <Navigate to={"/signin"} />} />
+        <Route
+          path="/friends"
+          element={user ? <Friends /> : <Navigate to={"/signin"} />}
+        />
         <Route path="/signup" element={!user ? <SignUp /> : <Navigate to={"/"} />} />
         <Route path="/signin" element={!user ? <SignIn /> : <Navigate to={"/"} />} />
       </Routes>

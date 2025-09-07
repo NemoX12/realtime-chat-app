@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const userSchema = new mongoose.Schema(
   {
@@ -7,7 +7,7 @@ const userSchema = new mongoose.Schema(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true, minLength: 6 },
     photoUrl: { type: String, default: "" },
-    friendsList: [{ type: mongoose.Schema.Types.ObjectId, ref: "User", default: [] }],
+    friendsList: [{ type: Schema.Types.ObjectId, ref: "User" }],
   },
   { timestamps: true }
 );
