@@ -58,7 +58,10 @@ const Sidebar = () => {
         >
           <LogOut className="text-label-text" />
         </button>
-        <button className="duration-150 transition-all p-1 rounded-sm hover:bg-spec-1-dark cursor-pointer">
+        <button
+          className="duration-150 transition-all p-1 rounded-sm hover:bg-spec-1-dark cursor-pointer"
+          onClick={() => navigate("/settings")}
+        >
           <Settings className="text-label-text" />
         </button>
       </div>

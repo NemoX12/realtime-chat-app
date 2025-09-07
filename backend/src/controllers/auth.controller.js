@@ -3,6 +3,7 @@ import cloudinary from "../lib/cloudinary.js";
 
 import { generateToken } from "../lib/utils.js";
 import User from "../models/user.model.js";
+import { io } from "../lib/socket.js";
 
 export const signUp = async (req, res) => {
   try {
@@ -99,12 +100,19 @@ export const updateProfile = async (req, res) => {
     let updateFields = {};
 
     if (profilePic) {
+      const existingPhoto = req.user.photoUrl;
+
+      if (existingPhoto && existingPhoto !== "") {
+        const filename = existingPhoto.split("/").pop().split(".")[0];
+        await cloudinary.uploader.destroy(filename);
+      }
+
       const uploadedImage = await cloudinary.uploader.upload(profilePic);
       updateFields.photoUrl = uploadedImage.secure_url;
     }
 
     if (firstName) {
-      updateFields.firstName = username;
+      updateFields.firstName = firstName;
     }
 
     if (lastName) {
@@ -116,6 +124,8 @@ export const updateProfile = async (req, res) => {
       { $set: updateFields },
       { new: true }
     );
+
+    io.emit("updateUser", updatedUser);
 
     res.status(200).json(updatedUser);
   } catch (error) {

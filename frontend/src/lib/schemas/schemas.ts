@@ -27,3 +27,16 @@ export const SignInSchema = z.object({
     .refine((val) => /[a-z]/.test(val), { message: "Must include a lowercase letter" })
     .refine((val) => /[0-9]/.test(val), { message: "Must include a number" }),
 });
+
+export const UpdateProfileSchema = z.object({
+  firstName: z
+    .string()
+    .min(1, "This field can't be empty")
+    .max(64, "This field can't be longer than 64 characters")
+    .optional(),
+  lastName: z
+    .string()
+    .min(1, "This field can't be empty")
+    .max(64, "This field can't be longer than 64 characters")
+    .optional(),
+});

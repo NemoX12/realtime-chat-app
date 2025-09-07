@@ -5,6 +5,7 @@ import { io, Socket } from "socket.io-client";
 
 import axiosInstance from "../lib/axiosInstance.ts";
 import type User from "../lib/schemas/userSchema.ts";
+import { useFriendsStore } from "./useFriendsStore.ts";
 
 const BASE_URL = "http://localhost:4411";
 
@@ -128,6 +129,12 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
 
     socket.on("getOnlineUsers", (userIds) => {
       set({ onlineUsers: userIds });
+    });
+
+    socket.on("updateUser", (updatedUser) => {
+      set({ user: updatedUser });
+
+      useFriendsStore.getState().updateFriend(updatedUser);
     });
   },
 

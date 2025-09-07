@@ -21,8 +21,8 @@ const ChatMiniature = ({ user }: ChatMiniatureProps) => {
     >
       <div className="relative">
         <img
-          className="w-12 h-12 rounded-full"
-          src={selectedChat?.photoUrl ? selectedChat.photoUrl : "avatar_placeholder.png"}
+          className="w-12 h-12 rounded-full object-cover"
+          src={user.photoUrl !== "" ? user.photoUrl : "avatar_placeholder.png"}
           alt="user_avatar"
         />
         {onlineUsers.includes(user._id) && (
