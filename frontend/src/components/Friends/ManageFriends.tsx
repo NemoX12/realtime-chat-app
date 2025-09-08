@@ -63,7 +63,7 @@ const ManageFriends = () => {
         <div>
           <input
             type="text"
-            className={`w-full pl-1.5 pr-10 py-2 duration-100 transition-all bg-spec-1-dark placeholder:text-label-text rounded-sm text-sm text-input-text 
+            className={`w-full pl-1.5 pr-10 py-2 duration-100 transition-all bg-secondary_dark placeholder:text-label-text rounded-sm text-sm text-input-text 
                 ${
                   inputError
                     ? "outline outline-red-400"

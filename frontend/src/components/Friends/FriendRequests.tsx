@@ -10,7 +10,7 @@ const FriendRequests = () => {
     <div className="max-w-96 w-full flex flex-col">
       <div className="flex my-2">
         <button
-          className={`duration-100 transition-all rounded-sm w-full px-1.5 py-2 bg-secondary_dark hover:bg-spec-1-dark 
+          className={`duration-100 transition-all w-full px-1.5 py-2 bg-secondary_dark hover:bg-spec-1-dark 
             ${activeTabNumber === 1 ? "bg-spec-1-dark" : ""} 
             text-label-text cursor-pointer`}
           onClick={() => {
@@ -21,7 +21,7 @@ const FriendRequests = () => {
           Add Friends
         </button>
         <button
-          className={`duration-100 transition-all rounded-sm w-full px-1.5 py-2 bg-secondary_dark hover:bg-spec-1-dark 
+          className={`duration-100 transition-all w-full px-1.5 py-2 bg-secondary_dark hover:bg-spec-1-dark 
             ${activeTabNumber === 2 ? "bg-spec-1-dark" : ""}
             text-label-text cursor-pointer`}
           onClick={() => {

@@ -31,7 +31,7 @@ const IncomingRequest = ({ request }: IncomingProps) => {
   };
 
   return (
-    <li className="border-b bg-secondary_dark border-spec-1-dark px-3 py-3.5 w-full flex justify-between items-center">
+    <li className="border-b border-spec-1-dark px-3 py-3.5 w-full flex justify-between items-center">
       <div className="flex justify-start items-center gap-2.5">
         <img
           src={sender?.photoUrl ? sender.photoUrl : "avatar_placeholder.png"}
