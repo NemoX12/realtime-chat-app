@@ -8,8 +8,8 @@ const Home = () => {
 
   return (
     <>
-      {selectedImage && <ExpandedImage />};
-      <div className="w-full max-w-7xl h-full max-h-[724px] bg-secondary_dark rounded-xl flex">
+      {selectedImage && <ExpandedImage />}
+      <div className="w-full h-full flex">
         <Sidebar />
         <Chat />
       </div>

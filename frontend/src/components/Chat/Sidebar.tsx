@@ -20,7 +20,7 @@ const Sidebar = () => {
   }, [getFriends]);
 
   return (
-    <div className="w-full flex flex-col justify-start items-start max-w-64 border-r border-spec-1-dark px-2.5 py-6">
+    <div className="w-full flex flex-col justify-start items-start max-w-64 border-r border-spec-1-dark px-2.5 py-6 bg-secondary_dark">
       <div className="mb-2 w-full flex justify-between items-center gap-3 border-b border-spec-1-dark pb-3">
         <input
           type="text"

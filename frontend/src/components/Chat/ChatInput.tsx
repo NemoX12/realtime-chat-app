@@ -71,7 +71,7 @@ const ChatInput = () => {
   };
 
   return (
-    <div className="w-full relative flex flex-col items-stretch">
+    <div className="w-full relative flex flex-col items-stretch px-5 py-2.5">
       {imagePreview && (
         <div className="mb-2 flex items-center gap-2">
           <div className="relative">
