@@ -1,6 +1,7 @@
 import type User from "../../lib/schemas/userSchema";
 import { UserX } from "lucide-react";
 import { useFriendsStore } from "../../store/useFriendsStore";
+import renderName from "../../lib/renderName";
 
 interface FriendProps {
   friend: User;
@@ -8,6 +9,8 @@ interface FriendProps {
 
 const Friend = ({ friend }: FriendProps) => {
   const { deleteFriend } = useFriendsStore();
+
+  const fullName = `${friend.firstName} ${friend.lastName}`;
 
   return (
     <li className="border-b border-spec-1-dark px-3 py-3.5 w-full flex justify-between items-center">
@@ -19,7 +22,7 @@ const Friend = ({ friend }: FriendProps) => {
         />
         <div>
           <h1 className="text-label-brighter-text text-lg">
-            {friend?.firstName} {friend?.lastName}
+            {renderName({ text: fullName, sliceLength: 25 })}
           </h1>
           <p className="text-label-text text-sm">#{friend._id.slice(-5)}</p>
         </div>

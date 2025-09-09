@@ -4,6 +4,7 @@ import { Clock, UserPlus2 } from "lucide-react";
 import type User from "../../lib/schemas/userSchema";
 import { useFriendsStore } from "../../store/useFriendsStore";
 import { useAuthStore } from "../../store/useAuthStore";
+import renderName from "../../lib/renderName";
 
 interface PersonProps {
   user: User;
@@ -14,6 +15,8 @@ const FoundPerson = ({ user }: PersonProps) => {
   const { friends, friendRequests, sendRequest } = useFriendsStore();
 
   const [status, setStatus] = useState<"none" | "pending" | "friends">("none");
+
+  const fullName = `${user.firstName} ${user.lastName}`;
 
   useEffect(() => {
     if (!sender?._id) return;
@@ -70,7 +73,7 @@ const FoundPerson = ({ user }: PersonProps) => {
         />
         <div>
           <h1 className="text-label-brighter-text text-lg">
-            {user.firstName} {user.lastName}
+            {renderName({ text: fullName, sliceLength: 25 })}
           </h1>
           <p className="text-label-text text-sm">#{user._id.slice(-5)}</p>
         </div>

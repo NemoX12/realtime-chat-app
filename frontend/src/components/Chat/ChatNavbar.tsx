@@ -1,5 +1,6 @@
 import { X } from "lucide-react";
 import { useChatStore } from "../../store/useChatStore";
+import renderName from "../../lib/renderName";
 
 const ChatNavbar = () => {
   const { selectedChat, closeChat } = useChatStore();
@@ -14,7 +15,9 @@ const ChatNavbar = () => {
           src={selectedChat?.photoUrl ? selectedChat.photoUrl : "avatar_placeholder.png"}
           alt="user_avatar"
         />
-        <h1 className="text-label-brighter-text">{fullName}</h1>
+        <h1 className="text-label-brighter-text" title={fullName}>
+          {renderName({ text: fullName, sliceLength: 40 })}
+        </h1>
       </div>
       <button className="text-label-text cursor-pointer" onClick={closeChat}>
         <X />

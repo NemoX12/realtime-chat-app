@@ -1,3 +1,4 @@
+import renderName from "../../lib/renderName.ts";
 import type User from "../../lib/schemas/userSchema.ts";
 import { useAuthStore } from "../../store/useAuthStore.ts";
 import { useChatStore } from "../../store/useChatStore.ts";
@@ -9,6 +10,7 @@ interface ChatMiniatureProps {
 const ChatMiniature = ({ user }: ChatMiniatureProps) => {
   const { onlineUsers } = useAuthStore();
   const { selectedChat, selectChat } = useChatStore();
+
   const fullName = `${user.firstName} ${user.lastName}`;
 
   return (
@@ -30,11 +32,11 @@ const ChatMiniature = ({ user }: ChatMiniatureProps) => {
         )}
       </div>
       <h1
-        className={`text-md 
+        className={`text-md
           ${selectedChat === user ? "text-secondary_dark" : "text-label-text"}
           `}
       >
-        {fullName}
+        {renderName({ text: fullName })}
       </h1>
     </div>
   );

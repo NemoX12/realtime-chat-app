@@ -6,6 +6,7 @@ import { useChatStore } from "../../store/useChatStore";
 import type User from "../../lib/schemas/userSchema";
 import { useFriendsStore } from "../../store/useFriendsStore";
 import Loader from "../Loader";
+import renderName from "../../lib/renderName";
 
 interface IncomingProps {
   request: Request;
@@ -15,6 +16,8 @@ const IncomingRequest = ({ request }: IncomingProps) => {
   const [sender, setSender] = useState<User | null>(null);
   const { manageRequest, isManagingRequest } = useFriendsStore();
   const { users } = useChatStore();
+
+  const fullName = `${sender?.firstName} ${sender?.lastName}`;
 
   useEffect(() => {
     if (!users) return;
@@ -40,7 +43,7 @@ const IncomingRequest = ({ request }: IncomingProps) => {
         />
         <div>
           <h1 className="text-label-brighter-text text-lg">
-            {sender?.firstName} {sender?.lastName}
+            {renderName({ text: fullName })}
           </h1>
           <p className="text-label-text text-sm">#{request._id.slice(-5)}</p>
         </div>
