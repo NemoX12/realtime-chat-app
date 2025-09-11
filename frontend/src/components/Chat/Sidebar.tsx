@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { LogOut, Settings, UserPlus2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -7,26 +7,107 @@ import { useFriendsStore } from "../../store/useFriendsStore";
 import { useAuthStore } from "../../store/useAuthStore";
 import Loader from "../Loader";
 
+const MIN_WIDTH = 120;
+const MAX_WIDTH = 400;
+
 const Sidebar = () => {
+  const getInitialSidebarWidth = () => {
+    const width = localStorage.getItem("sidebarWidth");
+
+    return width ? parseInt(width) : MAX_WIDTH;
+  };
+
   const [filteredFriends, setFilteredFriends] = useState("");
+  const [isResizing, setIsResizing] = useState(false);
+
+  const sidebarRef = useRef<HTMLDivElement>(null);
+  // TODO: fix sidebar jumping on render
+  const [currentWidth, setCurrentWidth] = useState<number>(getInitialSidebarWidth());
+  const [startX, setStartX] = useState<number>(0);
+  const [startWidth, setStartWidth] = useState<number>(MAX_WIDTH);
 
   const navigate = useNavigate();
 
   const { friends, getFriends, isGettingFriends } = useFriendsStore();
   const { logout } = useAuthStore();
 
+  const handleResize = useCallback(
+    (e: MouseEvent) => {
+      if (!isResizing) return;
+
+      const delta = e.clientX - startX;
+      let newWidth = startWidth + delta;
+
+      newWidth = Math.min(Math.max(newWidth, MIN_WIDTH), MAX_WIDTH);
+
+      if (newWidth > MIN_WIDTH && newWidth < MIN_WIDTH + 100) {
+        newWidth = MIN_WIDTH;
+      }
+
+      setCurrentWidth(newWidth);
+    },
+    [isResizing, startX, startWidth]
+  );
+
+  useEffect(() => {
+    const stopResize = () => {
+      setIsResizing(false);
+      document.body.style.userSelect = "";
+    };
+
+    if (isResizing) {
+      document.body.style.userSelect = "none";
+    }
+
+    window.addEventListener("mousemove", handleResize);
+    window.addEventListener("mouseup", stopResize);
+
+    return () => {
+      window.removeEventListener("mousemove", handleResize);
+      window.removeEventListener("mouseup", stopResize);
+      document.body.style.userSelect = "";
+    };
+  }, [handleResize, isResizing]);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      localStorage.setItem("sidebarWidth", currentWidth.toString());
+    }, 100);
+
+    return () => clearTimeout(timeout);
+  }, [currentWidth]);
+
   useEffect(() => {
     getFriends();
   }, [getFriends]);
 
   return (
-    <div className="w-full flex flex-col justify-start items-start max-w-64 border-r border-spec-1-dark px-2.5 py-6 bg-secondary_dark">
-      <div className="mb-2 w-full flex justify-between items-center gap-3 border-b border-spec-1-dark pb-3">
+    <div
+      ref={sidebarRef}
+      className="relative flex flex-col justify-start items-start border-r border-spec-1-dark px-2.5 py-6 bg-secondary_dark"
+      style={{ width: `${currentWidth}px` }}
+    >
+      <div
+        className="absolute w-1 h-full top-0 right-0 cursor-ew-resize"
+        onMouseDown={(e) => {
+          setIsResizing(true);
+          setStartX(e.clientX);
+          setStartWidth(currentWidth);
+        }}
+      />
+
+      <div
+        className={`mb-2 w-full flex 
+          ${currentWidth === 120 ? "justify-center" : "justify-between"}
+          items-center gap-3 border-b border-spec-1-dark pb-3`}
+      >
         <input
           type="text"
           placeholder="Find a chat"
           onChange={(e) => setFilteredFriends(e.target.value)}
-          className="w-full px-1.5 py-1 duration-100 transition-all bg-spec-1-dark placeholder:text-label-text rounded-sm text-sm text-input-text outline-label-text focus:outline"
+          className={`w-full px-1.5 py-1 duration-100 transition-all bg-spec-1-dark placeholder:text-label-text rounded-sm text-sm text-input-text outline-label-text focus:outline
+            ${currentWidth === 120 ? "hidden" : "flex"}
+            `}
         />
         <button
           className="duration-150 transition-all p-1 hover:bg-spec-1-dark rounded-sm cursor-pointer"
@@ -37,6 +118,7 @@ const Sidebar = () => {
           <UserPlus2 className="text-label-text" />
         </button>
       </div>
+
       <div className="w-full flex flex-1 flex-col justify-start items-center overflow-y-auto">
         {isGettingFriends ? (
           <Loader size={32} className="text-label-text my-auto" />
@@ -46,23 +128,26 @@ const Sidebar = () => {
               const fullName = `${friend.firstName} ${friend.lastName}`.toLowerCase();
               return fullName.includes(filteredFriends.toLowerCase());
             })
-            .map((friend) => <ChatMiniature key={friend._id} user={friend} />)
+            .map((friend) => (
+              <ChatMiniature key={friend._id} user={friend} width={currentWidth} />
+            ))
         ) : (
           "No friends"
         )}
       </div>
+
       <div className="w-full p-3.5 flex justify-between border-t border-spec-1-dark">
         <button
           className="duration-150 transition-all p-1 rounded-sm hover:bg-spec-1-dark cursor-pointer"
           onClick={logout}
         >
-          <LogOut className="text-label-text" />
+          <LogOut className="text-label-text" size={currentWidth === 120 ? 20 : 24} />
         </button>
         <button
           className="duration-150 transition-all p-1 rounded-sm hover:bg-spec-1-dark cursor-pointer"
           onClick={() => navigate("/settings")}
         >
-          <Settings className="text-label-text" />
+          <Settings className="text-label-text" size={currentWidth === 120 ? 20 : 24} />
         </button>
       </div>
     </div>

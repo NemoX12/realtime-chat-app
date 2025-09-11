@@ -1,7 +1,6 @@
 import type User from "../../lib/schemas/userSchema";
 import { UserX } from "lucide-react";
 import { useFriendsStore } from "../../store/useFriendsStore";
-import renderName from "../../lib/renderName";
 
 interface FriendProps {
   friend: User;
@@ -18,11 +17,14 @@ const Friend = ({ friend }: FriendProps) => {
         <img
           src={friend?.photoUrl ? friend.photoUrl : "avatar_placeholder.png"}
           alt="avatar"
-          className="w-12 h-12 rounded-full"
+          className="w-12 h-12 rounded-full object-cover"
         />
         <div>
-          <h1 className="text-label-brighter-text text-lg">
-            {renderName({ text: fullName, sliceLength: 25 })}
+          <h1
+            className="text-label-brighter-text text-lg max-w-42 truncate"
+            title={fullName}
+          >
+            {fullName}
           </h1>
           <p className="text-label-text text-sm">#{friend._id.slice(-5)}</p>
         </div>

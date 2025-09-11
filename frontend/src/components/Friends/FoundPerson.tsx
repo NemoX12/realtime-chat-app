@@ -4,7 +4,6 @@ import { Clock, UserPlus2 } from "lucide-react";
 import type User from "../../lib/schemas/userSchema";
 import { useFriendsStore } from "../../store/useFriendsStore";
 import { useAuthStore } from "../../store/useAuthStore";
-import renderName from "../../lib/renderName";
 
 interface PersonProps {
   user: User;
@@ -69,11 +68,14 @@ const FoundPerson = ({ user }: PersonProps) => {
         <img
           src={user.photoUrl ? user.photoUrl : "avatar_placeholder.png"}
           alt="avatar"
-          className="w-12 h-12 rounded-full"
+          className="w-12 h-12 rounded-full object-cover"
         />
         <div>
-          <h1 className="text-label-brighter-text text-lg">
-            {renderName({ text: fullName, sliceLength: 25 })}
+          <h1
+            className="text-label-brighter-text text-lg max-w-42 truncate"
+            title={fullName}
+          >
+            {fullName}
           </h1>
           <p className="text-label-text text-sm">#{user._id.slice(-5)}</p>
         </div>

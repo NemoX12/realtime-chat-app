@@ -6,7 +6,6 @@ import { useChatStore } from "../../store/useChatStore";
 import type User from "../../lib/schemas/userSchema";
 import { useFriendsStore } from "../../store/useFriendsStore";
 import Loader from "../Loader";
-import renderName from "../../lib/renderName";
 
 interface IncomingProps {
   request: Request;
@@ -39,11 +38,11 @@ const IncomingRequest = ({ request }: IncomingProps) => {
         <img
           src={sender?.photoUrl ? sender.photoUrl : "avatar_placeholder.png"}
           alt="avatar"
-          className="w-12 h-12 rounded-full"
+          className="w-12 h-12 rounded-full object-cover"
         />
         <div>
-          <h1 className="text-label-brighter-text text-lg">
-            {renderName({ text: fullName })}
+          <h1 className="text-label-brighter-text text-lg max-w-42 truncate">
+            {fullName}
           </h1>
           <p className="text-label-text text-sm">#{request._id.slice(-5)}</p>
         </div>
