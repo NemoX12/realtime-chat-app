@@ -41,7 +41,7 @@ const IncomingRequest = ({ request }: IncomingProps) => {
           className="w-12 h-12 rounded-full object-cover"
         />
         <div>
-          <h1 className="text-label-brighter-text text-lg max-w-42 truncate">
+          <h1 className="text-label-brighter-text lg:text-lg text-md max-w-32 sm:max-w-42 truncate">
             {fullName}
           </h1>
           <p className="text-label-text text-sm">#{request._id.slice(-5)}</p>
@@ -58,7 +58,10 @@ const IncomingRequest = ({ request }: IncomingProps) => {
               aria-label="Accept Request"
               onClick={() => handleManageRequest("accept")}
             >
-              <UserCheck className="text-label-text" />
+              <UserCheck
+                className="text-label-text"
+                size={document.documentElement.clientWidth >= 640 ? 24 : 20}
+              />
             </button>
             <button
               className="duration-150 transition-all p-1 hover:bg-spec-1-dark rounded-sm cursor-pointer"
@@ -66,7 +69,10 @@ const IncomingRequest = ({ request }: IncomingProps) => {
               aria-label="Decline Request"
               onClick={() => handleManageRequest("decline")}
             >
-              <UserX className="text-label-text" />
+              <UserX
+                className="text-label-text"
+                size={document.documentElement.clientWidth >= 640 ? 24 : 20}
+              />
             </button>
           </>
         )}

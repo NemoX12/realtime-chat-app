@@ -81,6 +81,14 @@ const Sidebar = () => {
     getFriends();
   }, [getFriends]);
 
+  useEffect(() => {
+    const screenWidth = document.documentElement.clientWidth;
+
+    if (screenWidth <= 1024) {
+      setCurrentWidth(MIN_WIDTH);
+    }
+  }, []);
+
   return (
     <div
       ref={sidebarRef}

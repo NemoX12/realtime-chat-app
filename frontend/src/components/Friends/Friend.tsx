@@ -21,7 +21,7 @@ const Friend = ({ friend }: FriendProps) => {
         />
         <div>
           <h1
-            className="text-label-brighter-text text-lg max-w-42 truncate"
+            className="text-label-brighter-text lg:text-lg text-md max-w-32 sm:max-w-42 truncate"
             title={fullName}
           >
             {fullName}
