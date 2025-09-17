@@ -92,8 +92,15 @@ const Sidebar = () => {
   return (
     <div
       ref={sidebarRef}
-      className="relative flex flex-col justify-start items-start border-r border-spec-1-dark px-2.5 py-6 bg-secondary_dark"
-      style={{ width: `${currentWidth}px` }}
+      className={`
+        relative flex flex-col justify-start items-start border-r border-spec-1-dark bg-secondary_dark
+        px-2.5 py-6
+        transition-all duration-200
+        ${currentWidth <= MIN_WIDTH ? "w-20" : "w-80"}
+        sm:w-[${currentWidth}px]
+        h-full
+      `}
+      style={{ width: currentWidth }}
     >
       <div
         className="absolute w-1 h-full top-0 right-0 cursor-ew-resize"
@@ -106,7 +113,7 @@ const Sidebar = () => {
 
       <div
         className={`mb-2 w-full flex 
-          ${currentWidth === 120 ? "justify-center" : "justify-between"}
+          ${currentWidth === MIN_WIDTH ? "justify-center" : "justify-between"}
           items-center gap-3 border-b border-spec-1-dark pb-3`}
       >
         <input
@@ -114,7 +121,7 @@ const Sidebar = () => {
           placeholder="Find a chat"
           onChange={(e) => setFilteredFriends(e.target.value)}
           className={`w-full px-1.5 py-1 duration-100 transition-all bg-spec-1-dark placeholder:text-label-text rounded-sm text-sm text-input-text outline-label-text focus:outline
-            ${currentWidth === 120 ? "hidden" : "flex"}
+            ${currentWidth === MIN_WIDTH ? "hidden" : "flex"}
             `}
         />
         <button
@@ -137,25 +144,36 @@ const Sidebar = () => {
               return fullName.includes(filteredFriends.toLowerCase());
             })
             .map((friend) => (
-              <ChatMiniature key={friend._id} user={friend} width={currentWidth} />
+              <ChatMiniature
+                key={friend._id}
+                user={friend}
+                width={currentWidth}
+                min_width={MIN_WIDTH}
+              />
             ))
         ) : (
           "No friends"
         )}
       </div>
 
-      <div className="w-full p-3.5 flex justify-between border-t border-spec-1-dark">
+      <div className={`w-full py-1.5 flex justify-between border-t border-spec-1-dark`}>
         <button
           className="duration-150 transition-all p-1 rounded-sm hover:bg-spec-1-dark cursor-pointer"
           onClick={logout}
         >
-          <LogOut className="text-label-text" size={currentWidth === 120 ? 20 : 24} />
+          <LogOut
+            className="text-label-text"
+            size={currentWidth === MIN_WIDTH ? 18 : 24}
+          />
         </button>
         <button
           className="duration-150 transition-all p-1 rounded-sm hover:bg-spec-1-dark cursor-pointer"
           onClick={() => navigate("/settings")}
         >
-          <Settings className="text-label-text" size={currentWidth === 120 ? 20 : 24} />
+          <Settings
+            className="text-label-text"
+            size={currentWidth === MIN_WIDTH ? 18 : 24}
+          />
         </button>
       </div>
     </div>

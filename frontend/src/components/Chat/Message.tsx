@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Trash2 } from "lucide-react";
 
 import { getHM } from "../../lib/formatDate";
 import type messageSchema from "../../lib/schemas/messageSchema";
 import { useChatStore } from "../../store/useChatStore";
+import { PageContext } from "../../context/PageContext";
 
 interface MessageProps {
   message: messageSchema;
@@ -13,6 +14,7 @@ const Message = ({ message }: MessageProps) => {
   const [isHovering, setIsHovering] = useState(false);
 
   const { selectedChat, selectImage, deleteMessage } = useChatStore();
+  const pageContext = useContext(PageContext);
 
   const handleDeleteMessage = () => {
     deleteMessage({ id: message._id });
@@ -45,7 +47,12 @@ const Message = ({ message }: MessageProps) => {
             <img
               src={message.attachments}
               alt="photoattachment"
-              className={`max-w-52 max-h-42 object-cover rounded-lg bg-spec-1-dark p-0.5 cursor-pointer
+              className={`${
+                pageContext && pageContext.screen < 500
+                  ? "max-w-48 max-h-38"
+                  : "max-w-52 max-h-42"
+              } 
+              object-cover rounded-lg bg-spec-1-dark p-0.5 cursor-pointer
           ${
             message.content === "" &&
             (message.receiverId === selectedChat?._id
@@ -72,7 +79,13 @@ const Message = ({ message }: MessageProps) => {
             }
           `}
           >
-            <p>{message.content}</p>
+            <p
+              className={`${
+                pageContext && pageContext?.screen < 500 ? "max-w-30" : "max-w-84"
+              }`}
+            >
+              {message.content}
+            </p>
             <p className="text-label-text text-xs text-right">
               {getHM({ timestamp: message.createdAt })}
             </p>

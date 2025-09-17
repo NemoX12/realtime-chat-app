@@ -4,7 +4,7 @@ import { useFriendsStore } from "../../store/useFriendsStore";
 import Friend from "./Friend";
 import type User from "../../lib/schemas/userSchema";
 import { useAuthStore } from "../../store/useAuthStore";
-import { PageContext } from "../../context/FriendContext";
+import { PageContext } from "../../context/PageContext";
 import { ArrowRight } from "lucide-react";
 
 const ManageFriends = () => {

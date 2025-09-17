@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useContext } from "react";
 import { X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -6,23 +6,16 @@ import FriendRequests from "../components/Friends/FriendRequests";
 import { useChatStore } from "../store/useChatStore";
 import { useFriendsStore } from "../store/useFriendsStore";
 import ManageFriends from "../components/Friends/ManageFriends";
-import { PageContext } from "../context/FriendContext";
+import { PageContext } from "../context/PageContext";
 
 const Friends = () => {
-  const [selectedPage, setSelectedPage] = useState<"add" | "manage">("add");
-  const [screen, setScreen] = useState<number>(0);
-
   const { getUsers } = useChatStore();
   const { getRequests, getFriends, subscribeFriends, unsubscribeFriends } =
     useFriendsStore();
 
+  const pageContext = useContext(PageContext);
+
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const screenWidth = document.documentElement.clientWidth;
-
-    setScreen(screenWidth);
-  }, []);
 
   useEffect(() => {
     getUsers();
@@ -41,18 +34,16 @@ const Friends = () => {
       >
         <X />
       </button>
-      <PageContext.Provider value={{ screen, setSelectedPage }}>
-        {screen >= 640 ? (
-          <>
-            <FriendRequests />
-            <ManageFriends />
-          </>
-        ) : selectedPage === "add" ? (
+      {pageContext && pageContext.screen >= 640 ? (
+        <>
           <FriendRequests />
-        ) : (
           <ManageFriends />
-        )}
-      </PageContext.Provider>
+        </>
+      ) : pageContext && pageContext.selectedPage === "add" ? (
+        <FriendRequests />
+      ) : (
+        <ManageFriends />
+      )}
     </div>
   );
 };

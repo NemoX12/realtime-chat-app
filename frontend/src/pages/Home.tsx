@@ -2,15 +2,22 @@ import Sidebar from "../components/Chat/Sidebar";
 import Chat from "../components/Chat/Chat";
 import { useChatStore } from "../store/useChatStore";
 import ExpandedImage from "../components/Chat/ExpandedImage";
+import { PageContext } from "../context/PageContext";
+import { useContext } from "react";
 
 const Home = () => {
-  const { selectedImage } = useChatStore();
+  const { selectedImage, selectedChat } = useChatStore();
+  const pageContext = useContext(PageContext);
 
   return (
     <>
       {selectedImage && <ExpandedImage />}
       <div className="w-full h-full flex">
-        <Sidebar />
+        {pageContext && pageContext.screen < 500 ? (
+          !selectedChat && <Sidebar />
+        ) : (
+          <Sidebar />
+        )}
         <Chat />
       </div>
     </>

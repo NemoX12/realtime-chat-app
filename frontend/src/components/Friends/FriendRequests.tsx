@@ -2,7 +2,7 @@ import { useContext, useState, type ReactNode } from "react";
 import AddFriends from "./AddFriends";
 import ManageRequests from "./ManageRequests";
 import { ArrowRight } from "lucide-react";
-import { PageContext } from "../../context/FriendContext";
+import { PageContext } from "../../context/PageContext";
 
 const FriendRequests = () => {
   const [activeTab, setActiveTab] = useState<ReactNode>(<AddFriends />);
