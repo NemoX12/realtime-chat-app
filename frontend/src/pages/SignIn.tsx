@@ -38,10 +38,10 @@ const SignIn = () => {
   };
 
   return (
-    <div className="w-full max-w-5xl bg-secondary_dark rounded-xl p-20 flex justify-between">
-      <div className="flex flex-col items-center justify-center gap-6">
-        <form className="flex flex-col items-center gap-8" onSubmit={handleSubmit}>
-          <div className="flex flex-col gap-10">
+    <div className="w-full max-w-10/12 md:max-w-5xl bg-secondary_dark rounded-xl p-10 md:p-20 flex md:flex-row flex-col justify-between">
+      <div className="flex flex-col w-full max-w-lg md:max-w-xs items-center justify-center gap-6">
+        <form className="w-full" onSubmit={handleSubmit}>
+          <div className="flex flex-col items-center justify-center gap-10 w-full my-6.5">
             <FormInput
               placeholder="Email"
               inputFor="email"
@@ -60,10 +60,10 @@ const SignIn = () => {
           <FormButton placeholder="Sign In" loading={isSigningIn} />
         </form>
         <div>
-          <p className="text-label-brighter-text hover:text-label-text text-md font-bold text-center duration-150 cursor-pointer">
+          <p className="text-label-brighter-text hover:text-label-text text-sm sm:text-md font-bold text-center duration-150 cursor-pointer">
             Forgot a password
           </p>
-          <p className="text-label-text text-md text-center mt-4">
+          <p className="text-label-text text-sm sm:text-md text-center mt-4">
             Don't have an account?{" "}
             <span
               className="text-label-brighter-text font-bold cursor-pointer hover:text-label-text"

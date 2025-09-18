@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import type { core } from "zod";
 import HandleZodError from "../../lib/handleZodError";
 
@@ -25,6 +25,15 @@ const FormInput = ({
   formError,
 }: FormInputProps) => {
   const [error, setError] = useState<string | null>(null);
+  const [inputWidth, setInputWidth] = useState<number | null>(null);
+
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (!inputRef.current) return;
+
+    setInputWidth(Math.floor(inputRef.current.getBoundingClientRect().width));
+  }, []);
 
   useEffect(() => {
     if (formError) {
@@ -34,7 +43,7 @@ const FormInput = ({
   }, [formError, inputFor]);
 
   return (
-    <div className="my-1">
+    <div className="my-1 w-full">
       <div className="relative">
         <input
           id={`${inputFor}_input`}
@@ -43,7 +52,8 @@ const FormInput = ({
           autoCorrect="off"
           type="text"
           value={formData[inputFor]}
-          className={`peer w-[300px] h-[52px] rounded-sm border 
+          ref={inputRef}
+          className={`peer w-full rounded-sm border 
             transition-all duration-150
             ${error ? "border-red-500" : "border-gray-500"} 
             bg-spec-1-dark p-3 text-sm text-input-text 
@@ -58,14 +68,19 @@ const FormInput = ({
         />
         <label
           htmlFor={`${inputFor}_input`}
-          className={`absolute left-3 ${
-            error ? "text-red-400" : "text-label-text"
-          } transition-all duration-150 top-1/ -translate-y-1/2 text-sm peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-sm peer-focus:top-3 peer-focus:-translate-y-1/2 peer-focus:text-xs peer-not-placeholder-shown:top-3 peer-not-placeholder-shown:-translate-y-1/2 peer-not-placeholder-shown:text-xs`}
+          className={`absolute left-3 
+          ${error ? "text-red-400" : "text-label-text"} 
+          transition-all duration-150 top-1/2 -translate-y-1/2 text-sm peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-sm peer-focus:top-3 peer-focus:-translate-y-1/2 peer-focus:text-xs peer-not-placeholder-shown:top-3 peer-not-placeholder-shown:-translate-y-1/2 peer-not-placeholder-shown:text-xs`}
         >
           {placeholder}
         </label>
       </div>
-      <p className="mt-1 absolute text-red-400 text-sm">{error}</p>
+      <p
+        className="truncate mt-1 absolute text-red-400 text-xs md:text-sm"
+        style={{ maxWidth: inputWidth + "px" }}
+      >
+        {error}
+      </p>
     </div>
   );
 };

@@ -1,0 +1,25 @@
+{
+  "name": "realtimechatapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "release": "standard-version"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NemoX12/realtime-chat-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/NemoX12/realtime-chat-app/issues"
+  },
+  "homepage": "https://github.com/NemoX12/realtime-chat-app#readme",
+  "devDependencies": {
+    "standard-version": "^9.5.0"
+  }
+}
