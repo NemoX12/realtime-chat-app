@@ -43,7 +43,7 @@ const FormInput = ({
   }, [formError, inputFor]);
 
   return (
-    <div className="my-1 w-full">
+    <div className="w-full">
       <div className="relative">
         <input
           id={`${inputFor}_input`}

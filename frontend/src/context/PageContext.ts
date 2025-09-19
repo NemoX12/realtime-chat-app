@@ -1,7 +1,7 @@
 import { createContext } from "react";
 
 interface PageProps {
-  screen: number;
+  screen: Record<string, number>;
   selectedPage: string;
   setSelectedPage: React.Dispatch<React.SetStateAction<"add" | "manage">>;
 }

@@ -45,10 +45,19 @@ const SignUp = () => {
   };
 
   return (
-    <div className="w-full max-w-10/12 md:max-w-5xl bg-secondary_dark rounded-xl p-10 md:p-20 flex md:flex-row flex-col justify-between">
-      <div className="flex flex-col w-full max-w-lg md:max-w-xs items-center justify-center gap-6">
+    <div
+      className="
+      w-full
+      min-h-screen
+      bg-secondary_dark
+      px-2 sm:px-4 md:px-8 lg:px-20
+      py-2 sm:py-4 md:py-8 lg:py-20
+      flex flex-col lg:flex-row
+      justify-center lg:justify-between items-center gap-8"
+    >
+      <div className="flex flex-col w-full md:w-2/3 max-w-lg items-center justify-center scale-90 sm:scale-100">
         <form className="w-full" onSubmit={handleSubmit}>
-          <div className="flex flex-col items-center justify-center gap-10 w-full my-6.5">
+          <div className="flex flex-col items-center justify-center gap-6 w-full my-6">
             <FormInput
               placeholder="First Name"
               inputFor="firstName"
@@ -80,8 +89,8 @@ const SignUp = () => {
           </div>
           <FormButton placeholder="Sign Up" loading={isSigningUp} />
         </form>
-        <p className="text-label-text text-sm sm:text-md text-center">
-          Already have an account?{" "}
+        <p className="text-label-text text-sm sm:text-md text-center my-2">
+          Already have an account?
           <span
             className="text-label-brighter-text font-bold cursor-pointer hover:text-label-text"
             onClick={() => navigate("/signin")}

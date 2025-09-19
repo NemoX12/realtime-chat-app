@@ -31,7 +31,7 @@ const Chat = () => {
         <div className="self-center my-auto">
           <h1
             className={`text-label-text 
-            ${pageContext && pageContext.screen < 500 ? "text-sm" : "text-lg"} 
+            ${pageContext && pageContext.screen.width < 500 ? "text-sm" : "text-lg"} 
             font-semibold`}
           >
             Begin chatting by selecting a chat

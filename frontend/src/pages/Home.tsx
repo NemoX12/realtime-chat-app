@@ -13,7 +13,7 @@ const Home = () => {
     <>
       {selectedImage && <ExpandedImage />}
       <div className="w-full h-full flex">
-        {pageContext && pageContext.screen < 500 ? (
+        {pageContext && pageContext.screen.width < 500 ? (
           !selectedChat && <Sidebar />
         ) : (
           <Sidebar />

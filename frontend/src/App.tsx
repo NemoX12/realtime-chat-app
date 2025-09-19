@@ -15,14 +15,22 @@ import Settings from "./pages/Settings.tsx";
 const App = () => {
   // selectedPage - responds for selected page in friends page on small devices
   const [selectedPage, setSelectedPage] = useState<"add" | "manage">("add");
-  const [screen, setScreen] = useState<number>(0);
+  const [screen, setScreen] = useState<Record<string, number>>({ width: 0, height: 0 });
 
   const { user, checkAuth, isCheckingAuth } = useAuthStore();
 
   useEffect(() => {
-    const screenWidth = document.documentElement.clientWidth;
+    function updateScreenSize() {
+      setScreen({
+        width: document.documentElement.clientWidth,
+        height: document.documentElement.clientHeight,
+      });
+    }
 
-    setScreen(screenWidth);
+    updateScreenSize(); // set initial size
+    window.addEventListener("resize", updateScreenSize);
+
+    return () => window.removeEventListener("resize", updateScreenSize);
   }, []);
 
   useEffect(() => {

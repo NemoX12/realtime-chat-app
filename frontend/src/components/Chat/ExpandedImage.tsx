@@ -17,7 +17,7 @@ const ExpandedImage = () => {
         src={selectedImage ? selectedImage : ""}
         alt="expanded_message_image"
         className={`${
-          pageContext && pageContext.screen < 500 ? "max-w-2xs" : "max-w-md"
+          pageContext && pageContext.screen.width < 500 ? "max-w-2xs" : "max-w-md"
         } animate-zoomin ${zoomedIn ? "scale-125 cursor-zoom-out" : "cursor-zoom-in"}`}
         onClick={(e) => {
           e.stopPropagation();

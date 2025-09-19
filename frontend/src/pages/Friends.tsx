@@ -34,7 +34,7 @@ const Friends = () => {
       >
         <X />
       </button>
-      {pageContext && pageContext.screen >= 640 ? (
+      {pageContext && pageContext.screen.width >= 640 ? (
         <>
           <FriendRequests />
           <ManageFriends />

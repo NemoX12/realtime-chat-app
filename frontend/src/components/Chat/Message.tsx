@@ -48,7 +48,7 @@ const Message = ({ message }: MessageProps) => {
               src={message.attachments}
               alt="photoattachment"
               className={`${
-                pageContext && pageContext.screen < 500
+                pageContext && pageContext.screen.width < 500
                   ? "max-w-48 max-h-38"
                   : "max-w-52 max-h-42"
               } 
@@ -81,7 +81,7 @@ const Message = ({ message }: MessageProps) => {
           >
             <p
               className={`${
-                pageContext && pageContext?.screen < 500 ? "max-w-30" : "max-w-84"
+                pageContext && pageContext?.screen.width < 500 ? "max-w-30" : "max-w-84"
               }`}
             >
               {message.content}
