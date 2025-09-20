@@ -11,7 +11,7 @@ const FriendRequests = () => {
   const pageContext = useContext(PageContext);
 
   return (
-    <div className="lg:max-w-1/3 sm:max-w-1/2 max-w-full w-full flex flex-col">
+    <div className="lg:max-w-1/3 sm:max-w-1/2 w-full flex flex-col">
       <button
         className="duration-150 transition-all sm:hidden flex text-spec-1-dark mt-2"
         onClick={() => pageContext?.setSelectedPage("manage")}

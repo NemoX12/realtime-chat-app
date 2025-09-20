@@ -51,8 +51,8 @@ const AddFriends = () => {
   );
 
   return (
-    <div className="flex flex-col justify-start items-start w-full h-full">
-      <form className="relative w-full" onSubmit={handleSearch}>
+    <div className="flex flex-col w-full h-full overflow-hidden">
+      <form className="relative w-full mb-4 p-0.5" onSubmit={handleSearch}>
         <div>
           <input
             type="text"
@@ -83,19 +83,20 @@ const AddFriends = () => {
           )}
         </button>
       </form>
-      <div className="mt-6.5 w-full">
+
+      <div className="flex flex-col flex-1 min-h-0 w-full">
         {filteredUsers && (
           <>
-            <h1 className="text-label-text text-lg font-semibold ">
+            <h1 className="text-label-text text-lg font-semibold mb-3 flex-shrink-0">
               Found {filteredUsers.length} user(s):
             </h1>
-            <ul className="overflow-y-auto mt-2.5 max-h-126">
+            <ul className="flex-1 overflow-y-auto min-h-0">
               {filteredUsers.length > 0 ? (
-                filteredUsers.map((user) => <FoundPerson key={user._id} user={user} />)
+                filteredUsers.map((user) => <FoundPerson user={user} key={user._id} />)
               ) : (
-                <h1 className="text-center mt-4 text-label-text text-md">
+                <li className="text-center mt-4 text-label-text text-md">
                   There's no one with this username or an ID
-                </h1>
+                </li>
               )}
             </ul>
           </>

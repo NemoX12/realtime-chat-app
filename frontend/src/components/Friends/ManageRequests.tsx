@@ -23,7 +23,7 @@ const ManageRequests = () => {
   return (
     <>
       {incomingRequests.length > 0 ? (
-        <ul className="overflow-y-auto max-h-152">
+        <ul className="overflow-y-auto h-full">
           {incomingRequests.map((request) => (
             <IncomingRequest key={request._id} request={request} />
           ))}

@@ -62,14 +62,14 @@ const ManageFriends = () => {
   }, [filter, handleSearch]);
 
   return (
-    <div className="lg:max-w-1/3 sm:max-w-1/2 max-w-full w-full">
+    <div className="lg:max-w-1/3 sm:max-w-1/2 w-full h-full overflow-hidden">
       <button
         className="duration-150 transition-all sm:hidden flex text-spec-1-dark mt-2"
         onClick={() => pageContext?.setSelectedPage("add")}
       >
         Manage your friends <ArrowRight />
       </button>
-      <div className="relative w-full sm:mt-0 mt-2">
+      <div className="relative w-full sm:mt-0 mt-2 p-0.5">
         <input
           type="text"
           className={`w-full pl-1.5 pr-10 py-2 duration-100 transition-all bg-secondary_dark placeholder:text-label-text rounded-sm text-sm text-input-text 
@@ -87,15 +87,17 @@ const ManageFriends = () => {
 
         {inputError && <p className="absolute text-red-400 text-sm mt-1">{inputError}</p>}
       </div>
-      <ul className="overflow-y-auto w-full mt-3.5 sm:mt-6.5 max-h-150">
-        {filteredUsers && filteredUsers.length > 0 ? (
-          filteredUsers?.map((friend) => <Friend key={friend._id} friend={friend} />)
-        ) : (
-          <h1 className="text-center mt-4 text-label-text text-md">
-            There's no one with this username or an ID
-          </h1>
-        )}
-      </ul>
+      <div className="flex flex-col flex-1 min-h-0">
+        <ul className="flex-1 overflow-y-auto min-h-0">
+          {filteredUsers && filteredUsers.length > 0 ? (
+            filteredUsers?.map((friend) => <Friend friend={friend} key={friend} />)
+          ) : (
+            <h1 className="text-center mt-4 text-label-text text-md">
+              There's no one with this username or an ID
+            </h1>
+          )}
+        </ul>
+      </div>
     </div>
   );
 };
