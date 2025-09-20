@@ -90,7 +90,7 @@ const ManageFriends = () => {
       <div className="flex flex-col flex-1 min-h-0">
         <ul className="flex-1 overflow-y-auto min-h-0">
           {filteredUsers && filteredUsers.length > 0 ? (
-            filteredUsers?.map((friend) => <Friend friend={friend} key={friend} />)
+            filteredUsers?.map((friend) => <Friend friend={friend} key={friend._id} />)
           ) : (
             <h1 className="text-center mt-4 text-label-text text-md">
               There's no one with this username or an ID
