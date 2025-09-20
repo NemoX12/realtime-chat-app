@@ -14,7 +14,7 @@ const ChatNavbar = () => {
           src={selectedChat?.photoUrl ? selectedChat.photoUrl : "avatar_placeholder.png"}
           alt="user_avatar"
         />
-        <h1 className="text-label-brighter-text max-w-[60%] truncate" title={fullName}>
+        <h1 className="text-label-brighter-text truncate max-w-96" title={fullName}>
           {fullName}
         </h1>
       </div>
